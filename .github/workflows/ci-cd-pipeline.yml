@@ -49,3 +49,6 @@ jobs:
             ${{ secrets.DOCKERHUB_USERNAME }}/ai-proxy-devops:latest
             ${{ secrets.DOCKERHUB_USERNAME }}/ai-proxy-devops:${{ github.sha }}
 
+      - name: Trigger Render deploy
+        run: curl -X POST "${{ secrets.RENDER_DEPLOY_HOOK }}"
+
