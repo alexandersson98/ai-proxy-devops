@@ -25,6 +25,7 @@ jobs:
       run: mvn test
       env:
         GROQ_API_KEY: ${{ secrets.GROQ_API_KEY }}
+        APP_API_KEY: ${{ secrets.APP_API_KEY }}
 
   build-and-push:
     needs: build-and-test
@@ -67,14 +68,22 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Cache NVD database
-        uses: actions/cache@v4
+      - name: Restore NVD cache
+        uses: actions/cache/restore@v4
         with:
           path: ~/.m2/repository/org/owasp/dependency-check-data
-          key: dependency-check-data
+          key: dependency-check-data-${{ github.run_id }}
+          restore-keys: |
+            dependency-check-data-
 
       - name: Run OWASP Dependency-Check
         run: mvn org.owasp:dependency-check-maven:check
         env:
           NVD_API_KEY: ${{ secrets.NVD_API_KEY }}
 
+      - name: Save NVD cache
+        if: always()
+        uses: actions/cache/save@v4
+        with:
+          path: ~/.m2/repository/org/owasp/dependency-check-data
+          key: dependency-check-data-${{ github.run_id }}
