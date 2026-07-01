@@ -72,6 +72,22 @@
 				</configuration>
 			</plugin>
 			<plugin>
+				<groupId>org.owasp</groupId>
+				<artifactId>dependency-check-maven</artifactId>
+				<version>11.1.0</version>
+				<configuration>
+					<failBuildOnCVSS>7</failBuildOnCVSS>
+					<nvdApiKey>${env.NVD_API_KEY}</nvdApiKey>
+				</configuration>
+				<executions>
+					<execution>
+						<goals>
+							<goal>check</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-compiler-plugin</artifactId>
 				<executions>
