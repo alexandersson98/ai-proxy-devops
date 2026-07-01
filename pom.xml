@@ -78,6 +78,7 @@
 				<configuration>
 					<failBuildOnCVSS>7</failBuildOnCVSS>
 					<nvdApiKey>${env.NVD_API_KEY}</nvdApiKey>
+					<nvdApiDelay>10000</nvdApiDelay>
 				</configuration>
 				<executions>
 					<execution>
