@@ -5,6 +5,9 @@ on:
     branches: [ main, dev ]
   pull_request:
     branches: [ main, dev ]
+  schedule:
+    - cron: '0 3 * * *'      # nightly full security scan at 03:00 UTC (runs unattended)
+  workflow_dispatch:         # manual "Run workflow" button, for on-demand scans / demos
 
 jobs:
   build-and-test:
@@ -57,6 +60,10 @@ jobs:
 
   security-scan:
     runs-on: ubuntu-latest
+    # Never blocks a commit: this job runs ONLY on the nightly schedule or a manual
+    # dispatch -- never on push or pull_request. So no branch ever waits on the NVD
+    # download during normal development.
+    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
     steps:
       - name: Checkout code
         uses: actions/checkout@v4

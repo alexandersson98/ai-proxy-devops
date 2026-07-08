@@ -28,6 +28,7 @@
 	</scm>
 	<properties>
 		<java.version>21</java.version>
+		<tomcat.version>10.1.57</tomcat.version>
 	</properties>
 	<dependencies>
 
@@ -83,7 +84,7 @@
 				<version>11.1.0</version>
 				<configuration>
 					<failBuildOnCVSS>7</failBuildOnCVSS>
-					<nvdApiKey>${env.NVD_API_KEY}</nvdApiKey>
+					<nvdApiKeyEnvironmentVariable>NVD_API_KEY</nvdApiKeyEnvironmentVariable>
 					<nvdApiDelay>10000</nvdApiDelay>
 				</configuration>
 				<executions>
@@ -129,6 +130,20 @@
 						</configuration>
 					</execution>
 				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.owasp</groupId>
+				<artifactId>dependency-check-maven</artifactId>
+				<version>11.1.0</version>
+				<configuration>
+					<failBuildOnCVSS>7</failBuildOnCVSS>
+					<nvdApiKeyEnvironmentVariable>NVD_API_KEY</nvdApiKeyEnvironmentVariable>
+					<nvdApiDelay>10000</nvdApiDelay>
+					<suppressionFiles>
+						<suppressionFile>owasp-suppressions.xml</suppressionFile>
+					</suppressionFiles>
+					<ossindexAnalyzerEnabled>false</ossindexAnalyzerEnabled>
+				</configuration>
 			</plugin>
 		</plugins>
 	</build>
